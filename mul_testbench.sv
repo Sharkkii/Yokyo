@@ -3,22 +3,35 @@
 
 module mul_testbench();
   int i, j;
-  wire [31:0] src, sink;
-  wire [63:0] dest, ans;
-  logic [31:0] src_logic, sink_logic;
-  logic [63:0] ans_logic;
+  wire is_signed;
   logic clk;
-  mul u0(clk,src,sink,dest);
 
+  // NOTE: signed mul
+  wire signed [31:0] src, sink;
+  wire signed [63:0] dest, ans;
+  logic signed [31:0] src_logic, sink_logic;
+  logic signed [63:0] ans_logic;
+  assign is_signed = 1'b1;
+
+  // NOTE: unsigned mul
+  // wire [31:0] src, sink;
+  // wire [63:0] dest, ans;
+  // logic [31:0] src_logic, sink_logic;
+  // logic [63:0] ans_logic;
+  // assign is_signed = 1'b0;
+
+  assign is_signed = 1'b1;
   assign src = src_logic;
   assign sink = sink_logic;
   assign ans = ans_logic;
 
+  mul u0(clk,is_signed,src,sink,dest);
+
   initial begin
     clk <= 1'b0;
-    for (i=0; i<1000000; i++) begin
-      src_logic = $random();
-      sink_logic = $random();
+    for (i=0; i<1; i++) begin
+      src_logic = 32'h1;
+      sink_logic = 32'hffff;
 
       #1;
       clk <= !clk; #1;
