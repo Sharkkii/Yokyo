@@ -3,23 +3,33 @@
 
 module div_testbench();
   int i, j;
-  wire [31:0] src, sink, quo, res, q, r;
-  logic [31:0] src_logic, sink_logic;
-  logic [31:0] q_logic, r_logic;
   logic clk;
+  wire is_signed;
 
-  div u0(clk,src,sink,quo,res);
+  // NOTE: signed div
+  wire signed [31:0] src, sink, quo, res, q, r;
+  logic signed [31:0] src_logic, sink_logic;
+  logic signed [31:0] q_logic, r_logic;
+  assign is_signed = 1'b1;
+
+  // NOTE: unsigned div
+  // wire [31:0] src, sink, quo, res, q, r;
+  // logic [31:0] src_logic, sink_logic;
+  // logic [31:0] q_logic, r_logic;
+  // assign is_signed = 1'b0;
 
   assign src = src_logic;
   assign sink = sink_logic;
   assign q = q_logic;
   assign r = r_logic;
 
+  div u0(clk,is_signed,src,sink,quo,res);
+
   initial begin
     clk = 1'b0;
-    for (i=0; i<100; i=i+1) begin
-      src_logic = $random();
-      sink_logic = $random();
+    for (i=0; i<1; i=i+1) begin
+      src_logic = 32'hffffffff;
+      sink_logic = 32'h1;
 
       #1;
 
@@ -27,10 +37,10 @@ module div_testbench();
       clk <= !clk; #1; clk <= !clk; #1; 
       clk <= !clk; #1; clk <= !clk; #1; 
       clk <= !clk; #1; clk <= !clk; #1; 
-      // clk <= !clk; #1; clk <= !clk; #1; 
-      // clk <= !clk; #1; clk <= !clk; #1; 
-      // clk <= !clk; #1; clk <= !clk; #1; 
-      // clk <= !clk; #1; clk <= !clk; #1; 
+      clk <= !clk; #1; clk <= !clk; #1; 
+      clk <= !clk; #1; clk <= !clk; #1; 
+      clk <= !clk; #1; clk <= !clk; #1; 
+      clk <= !clk; #1; clk <= !clk; #1; 
 
       #1;
 
@@ -50,4 +60,5 @@ module div_testbench();
       end
     end
   end
+
 endmodule
